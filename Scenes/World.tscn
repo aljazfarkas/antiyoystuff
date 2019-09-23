@@ -1,0 +1,111 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Scripts/World.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Camera2D.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/TileMap.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/UI/grey_panel.png" type="Texture" id=4]
+[ext_resource path="res://Assets/HexTileset/Tiles/alienBeige.png" type="Texture" id=5]
+[ext_resource path="res://Fonts/Civilization/Penumbra-HalfSerif-Std_35114.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://Scripts/TurnQueue.gd" type="Script" id=7]
+[ext_resource path="res://Scenes/Human.tscn" type="PackedScene" id=8]
+
+[sub_resource type="OpenSimplexNoise" id=1]
+octaves = 2
+period = 146.8
+persistence = 0.0
+lacunarity = 0.1
+
+[sub_resource type="NoiseTexture" id=2]
+width = 1920
+height = 1080
+noise = SubResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 200
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 56
+font_data = ExtResource( 6 )
+
+[node name="World" type="Node2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [ -52.5772 ],
+"_edit_vertical_guides_": [ 33.2302 ]
+}
+
+[node name="Noise" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.5, 0.5 )
+drag_margin_h_enabled = false
+drag_margin_v_enabled = false
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="TileMap" parent="." instance=ExtResource( 3 )]
+cell_size = Vector2( 65, 48 )
+cell_quadrant_size = 48
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Info" type="Control" parent="CanvasLayer"]
+visible = false
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/Info"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -960.0
+margin_top = -700.0
+margin_right = 960.0
+rect_min_size = Vector2( 1920, 700 )
+texture = ExtResource( 4 )
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer/Info"]
+position = Vector2( 270, -340 )
+scale = Vector2( 10, 10 )
+texture = ExtResource( 5 )
+
+[node name="Name" type="Label" parent="CanvasLayer/Info"]
+margin_left = 520.0
+margin_top = -660.0
+margin_right = 1882.0
+margin_bottom = -459.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.956863, 0.662745, 0.313726, 1 )
+custom_colors/font_color_shadow = Color( 0.0862745, 0.105882, 0.129412, 1 )
+custom_constants/shadow_offset_x = 15
+text = "name"
+
+[node name="Description" type="Label" parent="CanvasLayer/Info"]
+margin_left = 520.0
+margin_top = -460.0
+margin_right = 1863.0
+margin_bottom = -30.0
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor ."
+autowrap = true
+clip_text = true
+
+[node name="TurnQueue" type="Node2D" parent="."]
+script = ExtResource( 7 )
+
+[node name="Human" parent="TurnQueue" instance=ExtResource( 8 )]
+
+[connection signal="input_event" from="TurnQueue/Human" to="TurnQueue/Human" method="_on_Human_input_event"]
