@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/preview.png-2f916953e1476d510b85fcc8df9a6132.stex"
+path="res://.import/player_tile.png-b74fbd9fef495ad434ae6139a438bdce.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/HexTileset/preview.png"
-dest_files=[ "res://.import/preview.png-2f916953e1476d510b85fcc8df9a6132.stex" ]
+source_file="res://Assets/HexTileset/player_tile.png"
+dest_files=[ "res://.import/player_tile.png-b74fbd9fef495ad434ae6139a438bdce.stex" ]
 
 [params]
 

@@ -1,14 +1,13 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Tilesets/Tileset.tres" type="TileSet" id=1]
-[ext_resource path="res://Scripts/HexTiles.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/PlayerTiles.gd" type="Script" id=2]
 
-[node name="GroundTiles" type="TileMap"]
+[node name="PlayerTiles" type="TileMap"]
 tile_set = ExtResource( 1 )
-cell_size = Vector2( 66, 52 )
+cell_size = Vector2( 65, 50 )
 cell_half_offset = 0
 cell_y_sort = true
 format = 1
-tile_data = PoolIntArray( 2, 17, 0 )
 script = ExtResource( 2 )
 

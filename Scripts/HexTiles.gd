@@ -2,15 +2,16 @@ extends TileMap
 
 export (int) var WIDTH = 100 setget ,get_width
 export (int) var HEIGHT = 100 setget ,get_height
+export (int) var pixels_lifted = 15 setget ,get_pixels_lifted
 
 var tile_size = cell_size
 
 var open_simplex_noise
 
-export (int) var pixels_lifted = 15 setget ,get_pixels_lifted
 
 onready var units = get_tree().get_nodes_in_group("units")
 onready var buildings = get_tree().get_nodes_in_group("buildings")
+onready var player_tiles = get_node("/root/World/TurnQueue/Player/PlayerTiles")
 
 const TILES = {
 	'dirt': 0,
@@ -194,7 +195,8 @@ func dehighlight_reach(reach,body):
 
 """
 outline_tile(pos) replaces a tile with an outlined tile at a given WORLD position.
-If a cell is outlined, it is x_flipped
+If a cell is outlined, it is x_flipped.
+Its also lifts the players' territories.
 """
 func outline_tile(pos):
 	match get_cellv(pos):
@@ -206,7 +208,11 @@ func outline_tile(pos):
 		5: set_cellv(pos,TILES.snow_out,true)
 		6: set_cellv(pos,TILES.magic_out,true)
 		7: set_cellv(pos,TILES.ice_out,true)
-#
+	if player_tiles.get_used_cells().has(pos):
+		player_tiles.lift_tile(pos)
+"""
+Opposite of outline_tile()
+"""
 func deoutline_tile(pos):
 	match get_cellv(pos):
 		8: set_cellv(pos,TILES.dirt,false)
@@ -217,7 +223,8 @@ func deoutline_tile(pos):
 		14: set_cellv(pos,TILES.grass,false)
 		15: set_cellv(pos,TILES.ice,false)
 		16: set_cellv(pos,TILES.magic,false)
-
+	if player_tiles.get_used_cells().has(pos):
+		player_tiles.add_tile(pos)
 func get_height() -> int:
 	return HEIGHT
 

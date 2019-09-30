@@ -15,6 +15,7 @@ onready var tile_size = get_node("/root/World/HexTiles").cell_size
 onready var pixels_lifted = get_node("/root/World/HexTiles").get_pixels_lifted()
 onready var hextiles = get_node("/root/World/HexTiles")
 onready var buildings = get_tree().get_nodes_in_group("buildings")
+onready var player_tiles = get_node("/root/World/TurnQueue/Player/PlayerTiles")
 
 #return if the selected unit is lifted by 15 pixels
 var lifted = false setget set_lifted,get_lifted
@@ -23,6 +24,8 @@ var selected = false setget set_selected, get_selected
 signal was_selected
 signal was_deselected
 signal turn_over
+signal target_arrived
+
 
 """
 A function to set and emit signals about var selected

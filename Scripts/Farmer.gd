@@ -15,7 +15,9 @@ func _physics_process(delta):
 		velocity = move_and_slide(velocity)
 	if moves < available_moves:
 		emit_signal("turn_over")
-		
+	#adds the target tile to the territory
+	if hextiles.get_hex_position(position) == hextiles.get_hex_position(target):
+		player_tiles.add_tile(target)
 
 func _input(event):
 	if event is InputEventMouseButton:
