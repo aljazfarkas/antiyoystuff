@@ -1,1 +1,1 @@
-This a game I have been creating in Godotm insprired from a game called Antiyoy.
+This a game I have been creating in Godot inspired from a game called Antiyoy.
