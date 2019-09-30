@@ -1,15 +1,15 @@
 extends Camera2D
 
 #https://godotengine.org/qa/3761/example-or-algorithm-for-pinch-zoom
-onready var tilemap = get_parent().get_node("TileMap")
+onready var tilemap = get_parent().get_node("HexTiles")
 onready var tile_size = tilemap.cell_size
 
 var first_distance = 0
 var events={}
 var percision = 10
 var current_zoom
-var maximum_zoomin = Vector2(0.05,0.05)
-var minimum_zoomout = Vector2(1,1)
+export (Vector2) var maximum_zoomin = Vector2(0.05,0.05)
+export (Vector2) var minimum_zoomout = Vector2(1,1)
 var center
 
 func _ready():
@@ -23,7 +23,7 @@ func _ready():
 func is_zooming():
 	return events.size()>1
 
-func dist():
+func dist() -> Vector2:
 	var first_event =null
 	var result 
 	for event in events:
@@ -33,7 +33,7 @@ func dist():
 		first_event = events[event]
 	return result
 
-func center():
+func center() -> Vector2:
 	var first_event =null
 	var result 
 	for event in events:

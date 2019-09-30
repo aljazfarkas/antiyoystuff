@@ -9,13 +9,25 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "StaticBody2D",
+"class": "Buildings",
+"language": "GDScript",
+"path": "res://Scripts/Buildings.gd"
+}, {
 "base": "Node2D",
 "class": "TurnQueue",
 "language": "GDScript",
 "path": "res://Scripts/TurnQueue.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Units",
+"language": "GDScript",
+"path": "res://Scripts/Units.gd"
 } ]
 _global_script_class_icons={
-"TurnQueue": ""
+"Buildings": "",
+"TurnQueue": "",
+"Units": ""
 }
 
 [application]
@@ -24,15 +36,10 @@ config/name="Antiyoy"
 run/main_scene="res://Scenes/World.tscn"
 config/icon="res://icon.png"
 
-[debug]
-
-settings/stdout/print_fps=true
-
 [display]
 
 window/size/width=1920
 window/size/height=1080
-window/size/resizable=false
 window/handheld/orientation="portrait"
 window/stretch/mode="2d"
 window/stretch/aspect="expand"

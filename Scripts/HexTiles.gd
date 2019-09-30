@@ -7,9 +7,10 @@ var tile_size = cell_size
 
 var open_simplex_noise
 
-var lifted = Vector2(0,15)
+export (int) var pixels_lifted = 15 setget ,get_pixels_lifted
 
-var units = []
+onready var units = get_tree().get_nodes_in_group("units")
+onready var buildings = get_tree().get_nodes_in_group("buildings")
 
 const TILES = {
 	'dirt': 0,
@@ -43,8 +44,6 @@ func _ready():
 	open_simplex_noise.persistence = 0
 
 	_generate_world()
-	
-	units = get_tree().get_nodes_in_group("units")
 
 """
 _generate_world() assigns a tile for every cell in the tilemap
@@ -60,7 +59,7 @@ func _generate_world():
 _get_tile_index(noise_sample) returns an enum depending on the value of the
 noise in the specific position
 """
-func _get_tile_index(noise_sample):
+func _get_tile_index(noise_sample) -> int:
 	if noise_sample < -0.3:
 		return TILES.grass
 	if noise_sample < 0:
@@ -72,25 +71,25 @@ func _get_tile_index(noise_sample):
 
 """
 Get_hex_position(pos) Returns the MAP position of the wanted hexagon given the position.
-We add var lifted to account for the tiles that are highlighte, therefore lifted.
+We add var pixels_lifted to account for the tiles that are highlighte, therefore pixels_lifted.
 """
-func get_hex_position(pos):
+func get_hex_position(pos) -> Vector2:
 	var hex_position = Vector2()
 	#14 pixels is the height of the triangle outside the squares of the hexagon	
 	var hex_triangle_height = 14
 	#sides_vector is the y distance of how far away from the tile square the actual hexagon tile borders are(the triangle under the square)
 	var sides_vector = Vector2(0,hex_triangle_height * (1-(abs(tile_size.x/2-abs(fmod(pos.x,tile_size.x))))/(tile_size.x/2)))
 	#tile_pos is the map position of the tilemap square we clicked on
-	var tile_pos = get_parent().get_node("TileMap").world_to_map(pos)
+	var tile_pos = world_to_map(pos)
 	#if the mouse_pos and sides_vector is still the same tile, we are still inside the actual hexagon borders
 	if (abs(fmod(pos.y,tile_size.y + hex_triangle_height)) > tile_size.y):
-		hex_position = get_parent().get_node("TileMap").world_to_map(pos - sides_vector + lifted)
+		hex_position = world_to_map(pos - sides_vector + Vector2(0,pixels_lifted))
 	#we only change the hex_position location if we are outside the square in the hexagon		
 	elif((abs(fmod(pos.y,tile_size.y + hex_triangle_height)) < tile_size.y) and (abs(fmod(pos.y,tile_size.y)) > hex_triangle_height)):
 		hex_position = tile_pos
 	#if we are above the square remove the area above the square and add in the sides_vector(to add the triangle shape)
 	else:
-		hex_position = get_parent().get_node("TileMap").world_to_map(pos + sides_vector - Vector2(0,hex_triangle_height) + lifted)
+		hex_position = world_to_map(pos + sides_vector - Vector2(0,hex_triangle_height) + Vector2(0,pixels_lifted))
 	return hex_position
 	
 """
@@ -139,6 +138,11 @@ func highlight_reach(reach,body):
 		if is_cell_x_flipped(get_hex_position(unit.position).x,get_hex_position(unit.position).y) and unit.get_lifted() == false:
 			unit.set_lifted(true)
 			deoutline_tile(get_hex_position(unit.position))
+	for building in buildings:
+		(world_to_map(building.position))
+		if is_cell_x_flipped(get_hex_position(building.position).x,get_hex_position(building.position).y) and building.get_lifted() == false:
+			building.set_lifted(true)
+			deoutline_tile(get_hex_position(building.position))
 
 """
 Dehighlights the tiles the selected units can move to.
@@ -183,6 +187,11 @@ func dehighlight_reach(reach,body):
 	for unit in units:
 		if not is_cell_x_flipped(get_hex_position(unit.position).x,get_hex_position(unit.position).y) and unit.get_lifted() == true:
 			unit.set_lifted(false)
+	#dehighlights buildings in the moveable area
+	for building in buildings:
+		if not is_cell_x_flipped(get_hex_position(building.position).x,get_hex_position(building.position).y) and building.get_lifted() == true:
+			building.set_lifted(false)
+
 """
 outline_tile(pos) replaces a tile with an outlined tile at a given WORLD position.
 If a cell is outlined, it is x_flipped
@@ -209,8 +218,11 @@ func deoutline_tile(pos):
 		15: set_cellv(pos,TILES.ice,false)
 		16: set_cellv(pos,TILES.magic,false)
 
-func get_height():
+func get_height() -> int:
 	return HEIGHT
 
-func get_width():
+func get_width() -> int:
 	return WIDTH
+
+func get_pixels_lifted() -> int:
+	return pixels_lifted
