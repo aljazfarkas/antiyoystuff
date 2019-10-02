@@ -35,6 +35,8 @@ const TILES = {
 _ready() creates a new noise and gets all units in units group
 """
 func _ready():
+	"""FIXME: I don't know why, but cell_size.y keeps being changed to 48 (should be 50)"""
+	cell_size.y = 50
 	randomize()
 	open_simplex_noise = OpenSimplexNoise.new()
 	open_simplex_noise.seed = randi()
@@ -225,6 +227,7 @@ func deoutline_tile(pos):
 		16: set_cellv(pos,TILES.magic,false)
 	if player_tiles.get_used_cells().has(pos):
 		player_tiles.add_tile(pos)
+		
 func get_height() -> int:
 	return HEIGHT
 

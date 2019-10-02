@@ -17,6 +17,9 @@ func _ready():
 	var color = Color(rand_range(0,1), rand_range(0,1), rand_range(0,1), 0.6)	
 	modulate = color
 	_mark_castle_area()
+	
+func _process(delta):
+	pass
 
 """
 Marks the area around the castle.
@@ -43,3 +46,18 @@ Lifts the tile on the position.
 """
 func lift_tile(pos):
 	set_cellv(pos,TILES.player_area_lifted)
+
+"""
+Returns if at least one tile in the surrouding area is part of the territory.
+For checking if a player can move there.
+Return false if there aren't neighbours, return true otherwise.
+"""
+func check_neighbours(tile_pos) -> bool:
+	if (get_cellv(world_to_map(tile_pos) + Vector2(1,0)) != -1 or
+	get_cellv(world_to_map(tile_pos) + Vector2(-1,0)) != -1 or
+	get_cellv(world_to_map(tile_pos) + Vector2(0,1)) != -1 or
+	get_cellv(world_to_map(tile_pos) + Vector2(0,-1)) != -1 or
+	get_cellv(world_to_map(tile_pos) + Vector2(-1,-1)) != -1 or
+	get_cellv(world_to_map(tile_pos) + Vector2(-1,1)) != -1):
+		return true
+	else: return false

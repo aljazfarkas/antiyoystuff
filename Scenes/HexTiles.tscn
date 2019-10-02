@@ -5,10 +5,9 @@
 
 [node name="GroundTiles" type="TileMap"]
 tile_set = ExtResource( 1 )
-cell_size = Vector2( 66, 52 )
+cell_size = Vector2( 65, 50 )
 cell_half_offset = 0
 cell_y_sort = true
 format = 1
-tile_data = PoolIntArray( 2, 17, 0 )
 script = ExtResource( 2 )
 

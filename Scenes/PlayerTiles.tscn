@@ -4,6 +4,8 @@
 [ext_resource path="res://Scripts/PlayerTiles.gd" type="Script" id=2]
 
 [node name="PlayerTiles" type="TileMap"]
+show_behind_parent = true
+z_index = 50
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 65, 50 )
 cell_half_offset = 0
