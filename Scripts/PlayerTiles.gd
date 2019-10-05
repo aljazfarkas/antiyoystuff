@@ -7,6 +7,8 @@ onready var tile_size = get_node("/root/World/HexTiles").cell_size
 var used_cells = self.get_used_cells()
 const TILES = {'player_area':17,'player_area_lifted':18}
 
+#17 is normal player tile, 18 is lifted player tile
+var player_tiles = [17,18]
 var outlined_tiles = [8,9,10,11,12,13,14,15,16]
 
 """
@@ -48,16 +50,27 @@ func lift_tile(pos):
 	set_cellv(pos,TILES.player_area_lifted)
 
 """
-Returns if at least one tile in the surrouding area is part of the territory.
+Returns true if at least one tile in the surrouding area is part of the territory.
 For checking if a player can move there.
 Return false if there aren't neighbours, return true otherwise.
 """
 func check_neighbours(tile_pos) -> bool:
-	if (get_cellv(world_to_map(tile_pos) + Vector2(1,0)) != -1 or
-	get_cellv(world_to_map(tile_pos) + Vector2(-1,0)) != -1 or
-	get_cellv(world_to_map(tile_pos) + Vector2(0,1)) != -1 or
-	get_cellv(world_to_map(tile_pos) + Vector2(0,-1)) != -1 or
-	get_cellv(world_to_map(tile_pos) + Vector2(-1,-1)) != -1 or
-	get_cellv(world_to_map(tile_pos) + Vector2(-1,1)) != -1):
-		return true
-	else: return false
+#	print("tile_pos: ",world_to_map(tile_pos))
+	if int(world_to_map(tile_pos).y) % 2 == 0:
+		if (player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(1,0))) or
+		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(-1,0))) or
+		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(0,1))) or
+		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(0,-1))) or
+		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(-1,-1))) or
+		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(-1,1)))):
+			return true
+		else: return false
+	else:
+		if (player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(1,0))) or
+		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(-1,0))) or
+		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(0,1))) or
+		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(0,-1))) or
+		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(1,1))) or
+		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(1,-1)))):
+			return true
+		else: return false

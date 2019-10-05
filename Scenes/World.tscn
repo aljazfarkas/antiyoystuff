@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/World.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Camera2D.gd" type="Script" id=2]
@@ -6,8 +6,9 @@
 [ext_resource path="res://Assets/UI/grey_panel.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Antiyoy/field_elements/man0.png" type="Texture" id=5]
 [ext_resource path="res://Fonts/Civilization/Penumbra-HalfSerif-Std_35114.ttf" type="DynamicFontData" id=6]
-[ext_resource path="res://Scripts/TurnQueue.gd" type="Script" id=7]
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Assets/box_frame.png" type="Texture" id=7]
+[ext_resource path="res://Scripts/TurnQueue.gd" type="Script" id=8]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=9]
 
 [sub_resource type="DynamicFont" id=1]
 size = 105
@@ -16,6 +17,9 @@ font_data = ExtResource( 6 )
 [sub_resource type="DynamicFont" id=2]
 size = 40
 font_data = ExtResource( 6 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 53.4062, 95.1732 )
 
 [node name="World" type="Node2D"]
 script = ExtResource( 1 )
@@ -85,14 +89,42 @@ text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
 "
 autowrap = true
 
-[node name="screen_size" type="Label" parent="CanvasLayer/Info"]
-margin_left = 40.4486
-margin_top = -23.0374
-margin_right = 1920.45
-margin_bottom = -9.03735
+[node name="UnitPicker" type="Control" parent="CanvasLayer"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/UnitPicker"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -210.0
+texture = ExtResource( 4 )
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="Farmer" type="Area2D" parent="CanvasLayer/UnitPicker"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/UnitPicker/Farmer"]
+visible = false
+position = Vector2( 212.251, -103.265 )
+shape = SubResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer/UnitPicker/Farmer"]
+position = Vector2( 200, -120 )
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 5 )
+
+[node name="Frame" type="Sprite" parent="CanvasLayer/UnitPicker/Farmer"]
+visible = false
+position = Vector2( 211.771, -103.442 )
+scale = Vector2( 4.10529, 6.70152 )
+texture = ExtResource( 7 )
 
 [node name="TurnQueue" type="Node2D" parent="."]
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 
-[node name="Player" parent="TurnQueue" instance=ExtResource( 8 )]
+[node name="Player" parent="TurnQueue" instance=ExtResource( 9 )]
 
+[connection signal="input_event" from="CanvasLayer/UnitPicker/Farmer" to="." method="_on_Farmer_input_event"]

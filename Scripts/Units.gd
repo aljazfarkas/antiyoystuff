@@ -7,7 +7,7 @@ Reach is between how many tiles the selected unit can travel.
 Moves is how many times the selected unit can travel.
 """
 export (int) var speed = 300
-export (int) var reach = 5
+export (int) var reach = 2
 export (int) var available_moves = 1000
 
 onready var tile_size = get_node("/root/World/HexTiles").cell_size

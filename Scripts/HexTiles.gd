@@ -7,7 +7,7 @@ export (int) var pixels_lifted = 15 setget ,get_pixels_lifted
 var tile_size = cell_size
 
 var open_simplex_noise
-
+var outlined_tiles = []
 
 onready var units = get_tree().get_nodes_in_group("units")
 onready var buildings = get_tree().get_nodes_in_group("buildings")
@@ -96,7 +96,7 @@ func get_hex_position(pos) -> Vector2:
 	return hex_position
 	
 """
-	Highlights the tiles the selected units can move to. The tiles are reach distance away from the selected unit. 
+	Highlights the tiles the selected units can move to. The tiles are reach distance away from the selected unit.
 """
 func highlight_reach(reach,body):
 	var reach_even = reach
@@ -145,12 +145,19 @@ func highlight_reach(reach,body):
 		(world_to_map(building.position))
 		if is_cell_x_flipped(get_hex_position(building.position).x,get_hex_position(building.position).y) and building.get_lifted() == false:
 			building.set_lifted(true)
-			deoutline_tile(get_hex_position(building.position))
-
+			deoutline_tile(get_hex_position(building.position))	
+	#dehighlights the tiles more than one tile away from the territory
+	for cell in outlined_tiles:
+		#we always add tile_size/2 without it, it gives the position of the upper left corner of the tile, which is outside the hexagon
+		if player_tiles.check_neighbours(map_to_world(cell) + tile_size/2) == false:
+			deoutline_tile(cell)
+		
 """
 Dehighlights the tiles the selected units can move to.
 """
 func dehighlight_reach(reach,body):
+	#we reset the array
+	outlined_tiles.clear()
 	var reach_even = reach
 	var reach_odd = reach
 	var current_tile = get_hex_position(body.position)
@@ -201,6 +208,9 @@ If a cell is outlined, it is x_flipped.
 Its also lifts the players' territories.
 """
 func outline_tile(pos):
+#	We append every tile in the highlighted zone to the outlined_tiles array.
+	if not outlined_tiles.has(pos):
+		outlined_tiles.append(pos)
 	match get_cellv(pos):
 		0: set_cellv(pos,TILES.dirt_out,true)
 		1: set_cellv(pos,TILES.sand_out,true)

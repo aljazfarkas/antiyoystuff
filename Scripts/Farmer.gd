@@ -8,7 +8,7 @@ var can_move = true
 
 func _ready():
 	#start the game in the middle of the tile
-	target = self.position
+	target = self.position.snapped(tile_size/2)
 
 func _physics_process(delta):
 	velocity = (target - self.position).normalized() * speed
