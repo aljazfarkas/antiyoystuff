@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Units.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Farmer.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scripts/Buildings.gd" type="Script" id=4]
-[ext_resource path="res://Scenes/Castle.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Scenes/PlayerTiles.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scripts/Buildings.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Castle.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/PlayerTiles.tscn" type="PackedScene" id=5]
 
 [node name="Player" type="Node2D"]
 script = ExtResource( 1 )
@@ -13,17 +12,11 @@ script = ExtResource( 1 )
 [node name="Units" type="KinematicBody2D" parent="."]
 script = ExtResource( 2 )
 
-[node name="Farmer" parent="Units" instance=ExtResource( 3 )]
-position = Vector2( 95, -80 )
-
-[node name="Farmer2" parent="Units" instance=ExtResource( 3 )]
-position = Vector2( -128.94, 77.4576 )
-
 [node name="Buildings" type="StaticBody2D" parent="."]
-script = ExtResource( 4 )
+script = ExtResource( 3 )
 
-[node name="Castle" parent="Buildings" instance=ExtResource( 5 )]
+[node name="Castle" parent="Buildings" instance=ExtResource( 4 )]
 position = Vector2( -1.16626, 0 )
 
-[node name="PlayerTiles" parent="." instance=ExtResource( 6 )]
+[node name="PlayerTiles" parent="." instance=ExtResource( 5 )]
 

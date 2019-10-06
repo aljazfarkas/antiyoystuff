@@ -16,7 +16,7 @@ Picks a random color for the player tiles.
 """
 func _ready():
 	randomize()
-	var color = Color(rand_range(0,1), rand_range(0,1), rand_range(0,1), 0.6)	
+	var color = Color(rand_range(0.8,1), rand_range(0,1), rand_range(0,1), 0.8)
 	modulate = color
 	_mark_castle_area()
 	
@@ -55,22 +55,21 @@ For checking if a player can move there.
 Return false if there aren't neighbours, return true otherwise.
 """
 func check_neighbours(tile_pos) -> bool:
-#	print("tile_pos: ",world_to_map(tile_pos))
-	if int(world_to_map(tile_pos).y) % 2 == 0:
-		if (player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(1,0))) or
-		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(-1,0))) or
-		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(0,1))) or
-		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(0,-1))) or
-		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(-1,-1))) or
-		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(-1,1)))):
+	if int(tile_pos.y) % 2 == 0:
+		if (player_tiles.has(get_cellv(tile_pos + Vector2(1,0))) or
+		player_tiles.has(get_cellv(tile_pos + Vector2(-1,0))) or
+		player_tiles.has(get_cellv(tile_pos + Vector2(0,1))) or
+		player_tiles.has(get_cellv(tile_pos + Vector2(0,-1))) or
+		player_tiles.has(get_cellv(tile_pos + Vector2(-1,-1))) or
+		player_tiles.has(get_cellv(tile_pos + Vector2(-1,1)))):
 			return true
 		else: return false
 	else:
-		if (player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(1,0))) or
-		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(-1,0))) or
-		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(0,1))) or
-		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(0,-1))) or
-		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(1,1))) or
-		player_tiles.has(get_cellv(world_to_map(tile_pos) + Vector2(1,-1)))):
+		if (player_tiles.has(get_cellv(tile_pos + Vector2(1,0))) or
+		player_tiles.has(get_cellv(tile_pos + Vector2(-1,0))) or
+		player_tiles.has(get_cellv(tile_pos + Vector2(0,1))) or
+		player_tiles.has(get_cellv(tile_pos + Vector2(0,-1))) or
+		player_tiles.has(get_cellv(tile_pos + Vector2(1,1))) or
+		player_tiles.has(get_cellv(tile_pos + Vector2(1,-1)))):
 			return true
 		else: return false

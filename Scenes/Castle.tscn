@@ -4,21 +4,21 @@
 [ext_resource path="res://Assets/Antiyoy/field_elements/castle.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 20, 20 )
+extents = Vector2( 23.1284, 20 )
 
 [node name="Castle" type="StaticBody2D" groups=[
 "buildings",
 ]]
-z_index = 99
+z_index = 4
 collision_mask = 0
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 0, 0.358475 )
+scale = Vector2( 1.1, 1.1 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2( 32, 32 )
+position = Vector2( 0.0947571, 2.24567 )
 shape = SubResource( 1 )
 

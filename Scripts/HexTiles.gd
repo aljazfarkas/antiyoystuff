@@ -1,5 +1,13 @@
 extends TileMap
 
+"""
+Z INDEXES:
+	0: normal hextiles
+	3: normal playertiles
+	4: lifted hextiles
+	5: lifted playertiles
+"""
+
 export (int) var WIDTH = 100 setget ,get_width
 export (int) var HEIGHT = 100 setget ,get_height
 export (int) var pixels_lifted = 15 setget ,get_pixels_lifted
@@ -9,7 +17,7 @@ var tile_size = cell_size
 var open_simplex_noise
 var outlined_tiles = []
 
-onready var units = get_tree().get_nodes_in_group("units")
+onready var units
 onready var buildings = get_tree().get_nodes_in_group("buildings")
 onready var player_tiles = get_node("/root/World/TurnQueue/Player/PlayerTiles")
 
@@ -136,20 +144,23 @@ func highlight_reach(reach,body):
 				reach_odd -= 1
 	#dehighlight the tile a unit stands on
 	deoutline_tile(current_tile)
+	#before dehighlighting and lifting update the units variable
+	units = get_tree().get_nodes_in_group("units")
 	#dehighlights other units in the moveable area
 	for unit in units:
 		if is_cell_x_flipped(get_hex_position(unit.position).x,get_hex_position(unit.position).y) and unit.get_lifted() == false:
 			unit.set_lifted(true)
 			deoutline_tile(get_hex_position(unit.position))
+	#dehighlights buildings in the moveable area
 	for building in buildings:
 		(world_to_map(building.position))
 		if is_cell_x_flipped(get_hex_position(building.position).x,get_hex_position(building.position).y) and building.get_lifted() == false:
-			building.set_lifted(true)
+#			building.set_lifted(true)
 			deoutline_tile(get_hex_position(building.position))	
 	#dehighlights the tiles more than one tile away from the territory
 	for cell in outlined_tiles:
 		#we always add tile_size/2 without it, it gives the position of the upper left corner of the tile, which is outside the hexagon
-		if player_tiles.check_neighbours(map_to_world(cell) + tile_size/2) == false:
+		if player_tiles.check_neighbours(cell) == false:
 			deoutline_tile(cell)
 		
 """

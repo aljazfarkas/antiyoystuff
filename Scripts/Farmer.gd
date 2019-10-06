@@ -7,9 +7,10 @@ var moves = 0
 var can_move = true
 
 func _ready():
+	self.add_to_group("units")
 	#start the game in the middle of the tile
 	target = self.position.snapped(tile_size/2)
-
+	
 func _physics_process(delta):
 	velocity = (target - self.position).normalized() * speed
 	#check the length so the body doesn't go too far and jitter
@@ -30,7 +31,7 @@ func _input(event):
 				var hex_position = hextiles.get_hex_position(get_global_mouse_position())
 				#highlighted tiles are x_flipped in hextiles.gd
 				#target only updates if there is territory around it
-				if hextiles.is_cell_x_flipped(hex_position.x,hex_position.y) and player_tiles.check_neighbours(hextiles.map_to_world(hex_position) + tile_size/2):
+				if hextiles.is_cell_x_flipped(hex_position.x,hex_position.y) and player_tiles.check_neighbours(hex_position):
 					#center the selected unit in the tile and dehighlight area
 					target = hextiles.map_to_world(hex_position) + tile_size/2
 					#position the unit in the middle of the tile(just to be sure)

@@ -26,7 +26,6 @@ signal was_deselected
 signal turn_over
 signal target_arrived
 
-
 """
 A function to set and emit signals about var selected
 We change collision shape position to adapt to lifting tiles.
